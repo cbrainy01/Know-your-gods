@@ -24,9 +24,9 @@ function init() {
            
             
         //create element for start button
-        const startButton = document.querySelector("#start-test");
-        //add click eventlistener to startButton
-        startButton.addEventListener("click", createTest);
+        const getQuestionButton = document.querySelector("#start-test");
+        //add click eventlistener to getQuestionButton
+        getQuestionButton.addEventListener("click", createTest);
         function createTest() {
             //create div for question answer form, and continuation option
             const div = document.createElement("div");
@@ -42,7 +42,8 @@ function init() {
             const randomParentNum = Math.floor(Math.random() * parents.length);
             const randomgodNum = Math.floor(Math.random() * arraySize);
             const randomGodProfile = testPool[randomgodNum]
-            const question =  `Who was the ${parents[randomParentNum]} of ${randomGodProfile.name}?`;
+            const randomParent = parents[randomParentNum]
+            const question =  `Who was the ${randomParent} of ${randomGodProfile.name}?`;
             //set random question as textContent of the p tag
             p.textContent = question;
             //create form for answering question
@@ -64,7 +65,7 @@ function init() {
             the times up. a bool called tooSlow would equal true. and a message saying
             ran out of time would show up*/
             let tooSlow = false;
-            const answerTimer = setTimeout(timeUser, 6000)
+            const answerTimer = setTimeout(timeUser, 15000)
             function timeUser() {
                 console.log("timerRan");
                 form.style.display = "none"
@@ -82,6 +83,10 @@ function init() {
                 clearTimeout(answerTimer);
                 console.log(input.value)
                 console.log(randomGodProfile)
+                if(input.value === randomGodProfile[randomParent]) {
+                    //answer was correct
+                    console.log("Congrats, right answer")
+                }
             }
             //create verify answer function which takes in the userInput as argument to determine if answer was right
         }  
