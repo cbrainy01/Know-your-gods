@@ -12,7 +12,7 @@ function init() {
     } )
     .catch( (error) => {console.log("Error: ", error)} );
 
-//---------------------------------------------------------------------------------------------------------------------------------
+ //---------------------------------------------------------------------------------------------------------------------------------
     function godsTriviaNDisplay(responseData) {
         arrayOfGods = responseData;
             //filter through arrayofGods and only pick out the gods who have both parents
@@ -23,8 +23,8 @@ function init() {
             } );
             createQuestion(testPool);
     }
-//-----------------------------------------------------------------------------------------------------------------------------------
-/**(FOREIGN)*/
+ //-----------------------------------------------------------------------------------------------------------------------------------
+ /**(FOREIGN)*/
   
     function createQuestion(testPool) {    
             //create button for question
@@ -65,7 +65,6 @@ function init() {
         //create input and button element
         const input = document.createElement("input");
         const userInput = input.value;
-        //console.log("user input is: ", userInput);
         const submitAnswer = document.createElement("button");
         submitAnswer.textContent = "submit answer"
         submitAnswer.setAttribute("class", "answer-button")
@@ -74,32 +73,50 @@ function init() {
         form.appendChild(submitAnswer);
         div.appendChild(form);
 
+        //create timer
+        const timer = setTimeout(timeUser, 6000, form, div)
+
         form.addEventListener("submit", (event) => {event.preventDefault();
              const userInput = event.target.querySelector("input").value;
              submitAnswer.style.display = "none";
+             clearTimeout(timer);
               checkAnswer(correctAnswer, userInput)
             });
         
     }    
+ 
+    function checkAnswer(correctAnswer, userInput) {                
+            //clearTimeout(timer);
 
-function checkAnswer(correctAnswer, userInput) {                
-            //clearTimeout(answerTimer);
-     
             if(userInput.toUpperCase() === correctAnswer.toUpperCase()) {
                 console.log("answer was correct");    
-            console.log(userInput.toUpperCase());
+                console.log(userInput.toUpperCase());
+                //increase count of gotRightCount
             }        
             else if(userInput.toUpperCase() !== correctAnswer.toUpperCase()) {
                 console.log("answer was wrong");
                 console.log(userInput.toUpperCase());
                 console.log(correctAnswer.toUpperCase());
+                //show user what the right answer was
             }
             
         }
     
+    function timeUser(form, div) {
+        console.log("timerRan");
+        form.style.display = "none" /**(FOREIGN)*/
+        const timeOutMessage = document.createElement("p");
+        timeOutMessage.textContent = "Sorry, you ran out of time";
+        div.appendChild(timeOutMessage); /**(FOREIGN)*/
+    }    
     
 
-        
+        /**create boolean value which is attached to next question button
+         * if user clicks on nextQuestion, that boolean value becomes true
+         * we pass that boolean value into a function which creates a new question
+         * with a true boolean value, whatever was in the previous section is erased and then we call the createQuestion function
+         * inside that function, that boolean value returns to false
+         */
         
 
 
