@@ -11,13 +11,21 @@ function init() {
     fetch("http://localhost:4000/gods")
     .then( (response) => {return response.json();} )
     .then( (responseData) => {
-            godsTriviaNDisplay(responseData);
+            godsTrivia(responseData);
+            godsDisplay(responseData);
          
     } )
     .catch( (error) => {console.log("Error: ", error)} );
 
+    function godsDisplay(arrayOfGods) {
+        /*create search bar which has all gods in a scrollable dropdown.
+        when god is clicked, thier profile is displayed on the screen.
+        the profile will contain name, picture, father, mother, power, and a delete button*/
+        arrayOfGods;
+    }
+
  //---------------------------------------------------------------------------------------------------------------------------------
-    function godsTriviaNDisplay(responseData) {
+    function godsTrivia(responseData) {
         arrayOfGods = responseData;
             //filter through arrayofGods and only pick out the gods who have both parents
                 testPool = arrayOfGods.filter( (profile) => {
