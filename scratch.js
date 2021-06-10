@@ -7,34 +7,37 @@
         //  * form (found in createQuestion)
         //  * div (found in createQuestion)
         //  */
-        // function createTimer() {
-        //     let tooSlow = false;
-        //     const answerTimer = setTimeout(timeUser, 6000)
-        //     function timeUser() {
-        //         console.log("timerRan");
-        //         form.style.display = "none"
-        //         const timeOutMessage = document.createElement("p");
-        //         timeOutMessage.textContent = "Sorry, you ran out of time";
-        //         div.appendChild(timeOutMessage);
-        //         tooSlow = true;
-        //         /**ask user if they would like to continue test
-        //          * if they do, you would call the function which creates question 
-        //          * alongside that will be an option to end the test that will give score as a percentage
-        //         */
-        //        const endButton = document.createElement("button");
-        //        div.appendChild(endButton);
-        //        endButton.textContent = "end test";
-        //        //add event listener which displays results of test
-        //        endButton.addEventListener("click", displayResults);
-        //        function displayResults() {
-        //            const testResult = (correctAnswerCount / questionsGiven) * 100 + "%";
-        //            const pResult = document.createElement("p");
-        //            pResult.textContent = testResult.
-        //            div.appendChild(pResult);
-        //        }
-               
-        //     }
+        function createTimer() {
+             setTimeout(timeUser(form, div), 6000)
+
+            function timeUser(form, div) {
+                console.log("timerRan");
+                form.style.display = "none" /**(FOREIGN)*/
+                const timeOutMessage = document.createElement("p");
+                timeOutMessage.textContent = "Sorry, you ran out of time";
+                div.appendChild(timeOutMessage); /**(FOREIGN)*/
+                
+            }
+        }
+
+        
+        
+        /**ask user if they would like to continue test
+                 * if they do, you would call the function which creates question 
+                 * alongside that will be an option to end the test that will give score as a percentage
+                */
+        // const endButton = document.createElement("button");
+        // div.appendChild(endButton);
+        // endButton.textContent = "end test";
+        // //add event listener which displays results of test
+        // endButton.addEventListener("click", displayResults);
+        // function displayResults() {
+        //     const testResult = (correctAnswerCount / questionsGiven) * 100 + "%";
+        //     const pResult = document.createElement("p");
+        //     pResult.textContent = testResult.
+        //     div.appendChild(pResult);
         // }
+
 
         // function createGrader() {
         // //create submit event for form

@@ -4,6 +4,10 @@ window.addEventListener("DOMContentLoaded", init);
 
 function init() {
     let arrayOfGods;
+    let testPool;
+    let questionsGiven = 0;
+    let gotRightCount = 0;
+    let visibleTimer;
     fetch("http://localhost:4000/gods")
     .then( (response) => {return response.json();} )
     .then( (responseData) => {
@@ -16,32 +20,39 @@ function init() {
     function godsTriviaNDisplay(responseData) {
         arrayOfGods = responseData;
             //filter through arrayofGods and only pick out the gods who have both parents
-            const testPool = arrayOfGods.filter( (profile) => {
+                testPool = arrayOfGods.filter( (profile) => {
                 //the god profile meets the criteria if it has both parents. If it meets criteria, it goes in testPool array
                 return profile.father !== "None" && profile.mother !== "None"
                 
             } );
-            createQuestion(testPool);
+   
+                createQuestion(testPool);
+
     }
  //-----------------------------------------------------------------------------------------------------------------------------------
- /**(FOREIGN)*/
   
     function createQuestion(testPool) {    
-            //create button for question
-            const testSection = document.querySelector("section.test");
-            const getQuestionButton = document.createElement("button");
-            getQuestionButton.textContent = "get question";
-            testSection.appendChild(getQuestionButton);
-            //add click eventlistener to getQuestionButton
-            getQuestionButton.addEventListener("click",(e) => showQuestion(testSection, testPool));
-    
+        generateQuestion = false;
+        //create button for question
+        const testSection = document.querySelector("section.test");
+        const getQuestionButton = document.createElement("button");
+        getQuestionButton.textContent = "start test";
+        testSection.appendChild(getQuestionButton);
+        //add click eventlistener to getQuestionButton and hide question button so user cant generate multiple quesions
+        getQuestionButton.addEventListener("click",(e) => { 
+            showQuestion(testPool);
+            getQuestionButton.style.display = "none";
+            questionsGiven++; 
+        });
     }
 
-    function showQuestion(testSection, testPool) {
+    function showQuestion(testPool) {
+        const testSection = document.querySelector("section.test");
         //create div for question answer form, and continuation option
         const div = document.createElement("div");
         //append div to testsection
         testSection.appendChild(div); /**(FOREIGN)*/
+        div.setAttribute("class", "question-div");
         //create p for question
         const p = document.createElement("p");
         //append p to div
@@ -74,40 +85,63 @@ function init() {
         div.appendChild(form);
 
         //create timer
-        const timer = setTimeout(timeUser, 6000, form, div)
+        const timeUserHas = 8000; /**in milliseconds */
+        const timer = setTimeout(timeUser, timeUserHas, form, div, correctAnswer)
+                //create countdown timer by using setInterval funcion. setInterval(function, milliseconds);
+                const timeUserHasInSeconds = (timeUserHas / 1000) - 1;
+                let count = timeUserHasInSeconds;
+                countTracker = document.createElement("p");
+                showTime = document.createElement("p");
+                showTime.textContent = "Time left: ";
+                countTracker.textContent = count;
+                div.appendChild(showTime);
+                div.appendChild(countTracker);
+         visibleTimer = setInterval(countDown, 1000, countTracker, div);
 
-        form.addEventListener("submit", (event) => {event.preventDefault();
+        form.addEventListener("submit", (event) => {
+             
+             event.preventDefault();
+             //get whatever user input was and pass into checkAnswer as argument
              const userInput = event.target.querySelector("input").value;
+             //make submit answer disappear so user cant resubmit
              submitAnswer.style.display = "none";
+             //if user clicks submit button, the questions been answered and theres no need for timers
              clearTimeout(timer);
-              checkAnswer(correctAnswer, userInput)
+             clearInterval(visibleTimer);
+             checkAnswer(correctAnswer, userInput, div)
             });
         
     }    
  
-    function checkAnswer(correctAnswer, userInput) {                
-            //clearTimeout(timer);
-
+    function checkAnswer(correctAnswer, userInput, div,) {                
+            const feedback = document.createElement("p");
+            div.appendChild(feedback);
             if(userInput.toUpperCase() === correctAnswer.toUpperCase()) {
+                feedback.textContent = "✅ Correct";
                 console.log("answer was correct");    
-                console.log(userInput.toUpperCase());
                 //increase count of gotRightCount
+                gotRightCount++;
+                console.log(questionsGiven);
+                console.log(gotRightCount);
+                endOrContinue();
             }        
             else if(userInput.toUpperCase() !== correctAnswer.toUpperCase()) {
-                console.log("answer was wrong");
-                console.log(userInput.toUpperCase());
-                console.log(correctAnswer.toUpperCase());
-                //show user what the right answer was
+               //show user what the right answer was
+                feedback.textContent = `❌ Incorrect. The right answer was ${correctAnswer}`;
+                endOrContinue();
             }
             
-        }
+    }
     
-    function timeUser(form, div) {
+    function timeUser(form, div, correctAnswer) {
         console.log("timerRan");
         form.style.display = "none" /**(FOREIGN)*/
         const timeOutMessage = document.createElement("p");
-        timeOutMessage.textContent = "Sorry, you ran out of time";
+        timeOutMessage.textContent = `⌛ Sorry, you ran out of time. The correct answer was ${correctAnswer}`;
         div.appendChild(timeOutMessage); /**(FOREIGN)*/
+        clearInterval(visibleTimer);
+
+        endOrContinue();
     }    
     
 
@@ -117,9 +151,71 @@ function init() {
          * with a true boolean value, whatever was in the previous section is erased and then we call the createQuestion function
          * inside that function, that boolean value returns to false
          */
+
+    function countDown(countTracker, div) {
+        //run if only count is greater than or equal to timer;
+        console.log("made it");
+        let count = countTracker.textContent;
+        let newCount = parseInt(count, 10);
+        newCount--;
+        countTracker.textContent = newCount;
+        div.appendChild(countTracker);
         
+    }
+        
+    function endOrContinue() {
+        //this is where the option for a new game goes.
+        //create button for ending test and button for new question
+        const endButton = document.createElement("button");
+        endButton.textContent = "end test";
+        const newQuestion = document.createElement("button");
+        newQuestion.textContent = "new question";
+        //append these buttons to the test section
+        const tSection = document.querySelector(".test");
+        tSection.appendChild(newQuestion);
+        tSection.appendChild(endButton);
+        //add event listeners for buttons
+        //for end button, test score will be calculated and displayed. also the new question button will disappear
+        endButton.addEventListener("click", testResults);
+        function testResults(e) {
+            e.target.style.display = "none";
+            newQuestion.style.display = "none";
+            const score = `${(gotRightCount / questionsGiven) * 100}%`;
+            const scoreDisplay = document.createElement("p");
+            scoreDisplay.textContent = `Test score: ${score}`;
+            tSection.appendChild(scoreDisplay);
 
-
+            //create button for new test. when you click on that button, 
+            const restart = document.createElement("button");
+            restart.textContent = "start new test"
+            tSection.appendChild(restart);
+            restart.addEventListener("click", restartTest);
+        }
+        newQuestion.addEventListener("click", (event) => { 
+            //count goes back up to 8
+            event.target.style.display = "none";
+            endButton.style.display = "none";
+            getNewQuestion();
+        });
+        
+        function getNewQuestion() {
+            showQuestion(testPool);
+        }
+       
+    }   
+    
+    function restartTest() {
+        const tSection = document.querySelector(".test");
+        tSection.textContent = "";
+        //create p which has the tests guidelines and append to t section
+        const guidelines = document.createElement("p");
+        guidelines.textContent = "This is the test section. You will have 8 seconds to answer each question.Capitalization does not matter but spelling does. Click on the start test button to get started"
+        tSection.appendChild(guidelines);
+        gotRightCount = 0;
+        questionsGiven = 0;
+        createQuestion(testPool);
+    }
+  
 
 
 
