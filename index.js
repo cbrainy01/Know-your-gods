@@ -56,7 +56,9 @@ function init() {
         //use profile index to get info for selected god and display in its div
         console.log("made it 2");
     const selectedProfile = arrayOfGods[profileIndex] 
-    const landingDiv = document.querySelector(".segment");
+    const container = document.querySelector(".container");
+    const landingDiv = document.createElement("div");
+    landingDiv.setAttribute("class", "segment");
     //create tags to store god info: p, img, p, p, p
     const showName = document.createElement("p");    
     const showPicture = document.createElement("img");    
@@ -65,13 +67,25 @@ function init() {
     const showMother = document.createElement("p");    
     //create variables for god info to display
     const godName = selectedProfile.name;
-    const godPicture = selectedProfile.picture;
+    const godPicture = selectedProfile.url;
     const godPower = selectedProfile.power;
     const godFather = selectedProfile.father;
     const godMother = selectedProfile.mother;
+    //set textContent of tags and attributes of image
+    showPicture.setAttribute("src", godPicture);
+    showPicture.setAttribute("alt", godName);
+    showName.textContent = `Name: ${godName}`;
+    showPower.textContent = `Power(s)/title(s): ${godPower}`;
+    showFather.textContent = `Father: ${godFather}`;
+    showMother.textContent = `Mother: ${godMother}`;
     //append tags to landing div
-    landingDiv.appendChild();
+    landingDiv.appendChild(showName);
+    landingDiv.appendChild(showPicture);
+    landingDiv.appendChild(showPower);
+    landingDiv.appendChild(showFather);
+    landingDiv.appendChild(showMother);
     //append landing div to container
+    container.appendChild(landingDiv);
     }
 
 
