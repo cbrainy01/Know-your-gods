@@ -1,3 +1,14 @@
 h1 {
     color: red;
 }
+
+.container {
+    display: grid;
+    grid-template-columns: 49% 49%;
+    grid-gap: 10px;
+    
+}
+
+.segment {
+    background-color: aquamarine;
+}

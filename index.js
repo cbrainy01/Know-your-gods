@@ -12,17 +12,69 @@ function init() {
     .then( (response) => {return response.json();} )
     .then( (responseData) => {
             godsTrivia(responseData);
-            godsDisplay(responseData);
+            godsDisplay();
          
     } )
     .catch( (error) => {console.log("Error: ", error)} );
 
-    function godsDisplay(arrayOfGods) {
+    function godsDisplay() {
         /*create search bar which has all gods in a scrollable dropdown.
         when god is clicked, thier profile is displayed on the screen.
         the profile will contain name, picture, father, mother, power, and a delete button*/
-        arrayOfGods;
+        createDropdown();
+        
     }
+
+    function createDropdown() {
+        const dropdown = document.querySelector("#dropdown-menu");
+        let profilePosition = 0;
+        arrayOfGods.forEach(profile => {
+            const option = document.createElement("option");
+            option.textContent = profile.name;
+            option.setAttribute("value", profilePosition);
+            dropdown.appendChild(option);
+           
+            profilePosition++
+        }); 
+           //create change event for each element, whenever element gets selected, its id is taken and used to create a get request
+            //that get request displays that
+            dropdown.addEventListener("change", (event) => {
+                console.log("made it");
+                //debugger
+                const profileIndex = parseInt(event.target.value, 10);
+                console.log(profileIndex);
+                displayProfile(profileIndex);
+            } ); 
+    }
+
+
+//     $('#selectId').on('change', function () {
+//         var selectVal = $("#selectId option:selected").val();
+//    });
+
+    function displayProfile(profileIndex) {
+        //use profile index to get info for selected god and display in its div
+        console.log("made it 2");
+    const selectedProfile = arrayOfGods[profileIndex] 
+    const landingDiv = document.querySelector(".segment");
+    //create tags to store god info: p, img, p, p, p
+    const showName = document.createElement("p");    
+    const showPicture = document.createElement("img");    
+    const showPower = document.createElement("p");    
+    const showFather = document.createElement("p");    
+    const showMother = document.createElement("p");    
+    //create variables for god info to display
+    const godName = selectedProfile.name;
+    const godPicture = selectedProfile.picture;
+    const godPower = selectedProfile.power;
+    const godFather = selectedProfile.father;
+    const godMother = selectedProfile.mother;
+    //append tags to landing div
+    landingDiv.appendChild();
+    //append landing div to container
+    }
+
+
 
  //---------------------------------------------------------------------------------------------------------------------------------
     function godsTrivia(responseData) {
@@ -151,24 +203,14 @@ function init() {
 
         endOrContinue();
     }    
-    
-
-        /**create boolean value which is attached to next question button
-         * if user clicks on nextQuestion, that boolean value becomes true
-         * we pass that boolean value into a function which creates a new question
-         * with a true boolean value, whatever was in the previous section is erased and then we call the createQuestion function
-         * inside that function, that boolean value returns to false
-         */
 
     function countDown(countTracker, div) {
-        //run if only count is greater than or equal to timer;
-        console.log("made it");
+        
         let count = countTracker.textContent;
         let newCount = parseInt(count, 10);
         newCount--;
         countTracker.textContent = newCount;
         div.appendChild(countTracker);
-        
     }
         
     function endOrContinue() {
