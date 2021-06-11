@@ -39,53 +39,57 @@ function init() {
            //create change event for each element, whenever element gets selected, its id is taken and used to create a get request
             //that get request displays that
             dropdown.addEventListener("change", (event) => {
-                console.log("made it");
-                //debugger
                 const profileIndex = parseInt(event.target.value, 10);
-                console.log(profileIndex);
                 displayProfile(profileIndex);
             } ); 
     }
 
-
-//     $('#selectId').on('change', function () {
-//         var selectVal = $("#selectId option:selected").val();
-//    });
-
     function displayProfile(profileIndex) {
         //use profile index to get info for selected god and display in its div
-        console.log("made it 2");
-    const selectedProfile = arrayOfGods[profileIndex] 
-    const container = document.querySelector(".container");
-    const landingDiv = document.createElement("div");
-    landingDiv.setAttribute("class", "segment");
-    //create tags to store god info: p, img, p, p, p
-    const showName = document.createElement("p");    
-    const showPicture = document.createElement("img");    
-    const showPower = document.createElement("p");    
-    const showFather = document.createElement("p");    
-    const showMother = document.createElement("p");    
-    //create variables for god info to display
-    const godName = selectedProfile.name;
-    const godPicture = selectedProfile.url;
-    const godPower = selectedProfile.power;
-    const godFather = selectedProfile.father;
-    const godMother = selectedProfile.mother;
-    //set textContent of tags and attributes of image
-    showPicture.setAttribute("src", godPicture);
-    showPicture.setAttribute("alt", godName);
-    showName.textContent = `Name: ${godName}`;
-    showPower.textContent = `Power(s)/title(s): ${godPower}`;
-    showFather.textContent = `Father: ${godFather}`;
-    showMother.textContent = `Mother: ${godMother}`;
-    //append tags to landing div
-    landingDiv.appendChild(showName);
-    landingDiv.appendChild(showPicture);
-    landingDiv.appendChild(showPower);
-    landingDiv.appendChild(showFather);
-    landingDiv.appendChild(showMother);
-    //append landing div to container
-    container.appendChild(landingDiv);
+        const selectedProfile = arrayOfGods[profileIndex] 
+        const container = document.querySelector(".container");
+        const landingDiv = document.createElement("div");
+        landingDiv.setAttribute("class", "segment");
+        //create tags to store god info: p, img, p, p, p
+        const showName = document.createElement("p");    
+        const showPicture = document.createElement("img");    
+        const showPower = document.createElement("p");    
+        const showFather = document.createElement("p");    
+        const showMother = document.createElement("p");    
+        //create variables for god info to display
+        const godName = selectedProfile.name;
+        const godPicture = selectedProfile.url;
+        const godPower = selectedProfile.power;
+        const godFather = selectedProfile.father;
+        const godMother = selectedProfile.mother;
+        //set textContent of tags and attributes of image
+        showPicture.setAttribute("src", godPicture);
+        showPicture.setAttribute("alt", godName);
+        //possibly set attribute for fixed size
+
+        showName.textContent = `Name: ${godName}`;
+        showPower.textContent = `Power(s)/title(s): ${godPower}`;
+        showFather.textContent = `Father: ${godFather}`;
+        showMother.textContent = `Mother: ${godMother}`;
+        //append tags to landing div
+        landingDiv.appendChild(showName);
+        landingDiv.appendChild(showPicture);
+        landingDiv.appendChild(showPower);
+        landingDiv.appendChild(showFather);
+        landingDiv.appendChild(showMother);
+        //append landing div to container
+        container.appendChild(landingDiv);
+
+        //create delete button
+        removeButton = document.createElement("button");
+        removeButton.textContent = "remove";
+        //append button to landing div;
+        landingDiv.appendChild(removeButton);
+        //add click event listener to button. when clicked, remove() its parent element
+        removeButton.addEventListener("click", (event) => {
+            event.target.parentElement.remove();
+
+        } );
     }
 
 
@@ -208,7 +212,6 @@ function init() {
     }
     
     function timeUser(form, div, correctAnswer) {
-        console.log("timerRan");
         form.style.display = "none" /**(FOREIGN)*/
         const timeOutMessage = document.createElement("p");
         timeOutMessage.textContent = `⌛ Sorry, you ran out of time. The correct answer was ${correctAnswer}`;
@@ -256,7 +259,6 @@ function init() {
             restart.addEventListener("click", restartTest);
         }
         newQuestion.addEventListener("click", (event) => { 
-            //count goes back up to 8
             event.target.style.display = "none";
             endButton.style.display = "none";
             getNewQuestion();
@@ -273,7 +275,7 @@ function init() {
         tSection.textContent = "";
         //create p which has the tests guidelines and append to t section
         const guidelines = document.createElement("p");
-        guidelines.textContent = "This is the test section. You will have 8 seconds to answer each question.Capitalization does not matter but spelling does. Click on the start test button to get started"
+        guidelines.textContent = "This is the test section. You will have 8 seconds to answer each question. Capitalization does not matter but spelling does. Click on the start test button to get started"
         tSection.appendChild(guidelines);
         gotRightCount = 0;
         questionsGiven = 0;
