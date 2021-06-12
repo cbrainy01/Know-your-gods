@@ -1,14 +1,69 @@
+@font-face {
+    src: url(fonts/gelio.fasolada.ttf);
+    font-family: mythfont;
+}
+
+* {
+    font-family: mythfont;
+}
+
+body {
+    background-color: #fdd577;
+}
+
+/*website header*/
 h1 {
-    color: red;
+    text-align: center;
+    font-size: 5.5em;
+    
 }
 
 .container {
     display: grid;
-    grid-template-columns: 49% 49%;
+    grid-template-columns: 32% 32% 32%;
     grid-gap: 10px;
     
 }
-
+/*profile*/
 .segment {
-    background-color: aquamarine;
+    background-color: rgb(61, 74, 253);
+}
+
+/*god name in profile*/
+.segment > :first-child {
+    text-align: center;
+    font-size: 2.7em;
+    /* color: red; */
+    color: #fdd577;
+}
+
+/*remove button*/
+.segment button {
+    color: red;
+}
+
+/*god power, mother, and father*/
+.segment p:nth-child(3), .segment p:nth-child(4), .segment p:nth-child(5) {
+    /* color: rgb(235, 88, 88); */
+    color: #fdd577;
+}
+
+/*display section*/
+.display {
+    padding-bottom: 3em;
+}
+
+section label {
+    font-size: 1.35em;
+    padding-bottom: 3em;
+}
+
+section select {
+    font-size: 1.1em;
+}
+
+/*trivia section header*/
+h2 {
+    text-align: center;
+    font-size: 2em;
 }

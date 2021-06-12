@@ -66,8 +66,9 @@ function init() {
         showPicture.setAttribute("src", godPicture);
         showPicture.setAttribute("alt", godName);
         //possibly set attribute for fixed size
-
-        showName.textContent = `Name: ${godName}`;
+        showPicture.setAttribute("width", 425);
+        showPicture.setAttribute("height", 417);
+        showName.textContent = `${godName}`;
         showPower.textContent = `Power(s)/title(s): ${godPower}`;
         showFather.textContent = `Father: ${godFather}`;
         showMother.textContent = `Mother: ${godMother}`;
@@ -110,21 +111,21 @@ function init() {
  //-----------------------------------------------------------------------------------------------------------------------------------
   
     function createQuestion(testPool) {    
-        generateQuestion = false;
         //create button for question
         const testSection = document.querySelector("section.test");
         const getQuestionButton = document.createElement("button");
-        getQuestionButton.textContent = "start test";
+        getQuestionButton.textContent = "start";
         testSection.appendChild(getQuestionButton);
         //add click eventlistener to getQuestionButton and hide question button so user cant generate multiple quesions
         getQuestionButton.addEventListener("click",(e) => { 
             showQuestion(testPool);
             getQuestionButton.style.display = "none";
-            questionsGiven++; 
+            
         });
     }
 
     function showQuestion(testPool) {
+        questionsGiven++; 
         const testSection = document.querySelector("section.test");
         //create div for question answer form, and continuation option
         const div = document.createElement("div");
@@ -163,7 +164,7 @@ function init() {
         div.appendChild(form);
 
         //create timer
-        const timeUserHas = 8000; /**in milliseconds */
+        const timeUserHas = 30000; /**in milliseconds */
         const timer = setTimeout(timeUser, timeUserHas, form, div, correctAnswer)
                 //create countdown timer by using setInterval funcion. setInterval(function, milliseconds);
                 const timeUserHasInSeconds = (timeUserHas / 1000) - 1;
@@ -247,7 +248,7 @@ function init() {
         function testResults(e) {
             e.target.style.display = "none";
             newQuestion.style.display = "none";
-            const score = `${(gotRightCount / questionsGiven) * 100}%`;
+            const score = `${((gotRightCount / questionsGiven) * 100)}%`
             const scoreDisplay = document.createElement("p");
             scoreDisplay.textContent = `Test score: ${score}`;
             tSection.appendChild(scoreDisplay);
@@ -275,7 +276,7 @@ function init() {
         tSection.textContent = "";
         //create p which has the tests guidelines and append to t section
         const guidelines = document.createElement("p");
-        guidelines.textContent = "This is the test section. You will have 8 seconds to answer each question. Capitalization does not matter but spelling does. Click on the start test button to get started"
+        guidelines.textContent = "This is the trivia section. You will have 8 seconds to answer each question. Capitalization does not matter but spelling does. Click on the start button to get started"
         tSection.appendChild(guidelines);
         gotRightCount = 0;
         questionsGiven = 0;
