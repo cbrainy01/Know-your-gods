@@ -164,7 +164,7 @@ function init() {
         div.appendChild(form);
 
         //create timer
-        const timeUserHas = 30000; /**in milliseconds */
+        const timeUserHas = 8000; /**in milliseconds */
         const timer = setTimeout(timeUser, timeUserHas, form, div, correctAnswer)
                 //create countdown timer by using setInterval funcion. setInterval(function, milliseconds);
                 const timeUserHasInSeconds = (timeUserHas / 1000) - 1;
@@ -287,3 +287,5 @@ function init() {
 
 
 }
+
+// local server: json-server --watch db.json --port 4000
